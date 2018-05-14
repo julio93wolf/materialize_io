@@ -12,7 +12,16 @@
     <div class="switch">
       <label>
         Off
-        <input id="checkbox" type="checkbox">
+        <input id="checkbox1" type="checkbox">
+        <span class="lever"></span>
+        On
+      </label>
+    </div>
+    <!-- Switch -->
+    <div class="switch">
+      <label>
+        Off
+        <input id="checkbox2" type="checkbox">
         <span class="lever"></span>
         On
       </label>
@@ -22,21 +31,31 @@
   <script
     src="https://code.jquery.com/jquery-3.3.1.js"
     integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous">
+  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     M.AutoInit();
     const socket = io()
     
-    $('#checkbox').change((event) => {
+    $('#checkbox1').change((event) => {
       socket.emit('client_checked',{
-        checked: $('#checkbox').is(':checked')
+        checked_1: $('#checkbox1').is(':checked'),
+        checked_2: $('#checkbox2').is(':checked')
+      })
+    })
+
+    $('#checkbox2').change((event) => {
+      socket.emit('client_checked',{
+        checked_1: $('#checkbox1').is(':checked'),
+        checked_2: $('#checkbox2').is(':checked')
       })
     })
 
     socket.on('server_checked', data => {
       console.log(data)
-      $('#checkbox').prop('checked', data.checked)
+      $('#checkbox1').prop('checked', data.checked_1)
+      $('#checkbox2').prop('checked', data.checked_2)
       M.updateTextFields()
     })
   </script>
